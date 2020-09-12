@@ -32,6 +32,6 @@ vsvenv () {
             fi
         fi
     else
-        printf "${YEL}==>${NC} An error occurred"
+        printf "${YEL}==>${NC} An error occurred\n"
     fi
 }
