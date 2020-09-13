@@ -22,5 +22,5 @@ If the directory ``./env`` already exists, you will be prompted to replace it wi
 After the venv is created a ``settings.json`` file will be created under ``./.vscode`` if it does not already exist. The entry: ``"python.pythonPath": "env/bin/python"`` will be added to the json to link your new venv to the python interpreter in VSCode.<br><br>
 You should now be ready to run your python project directly in VSCode using the venv.
 
-[vsvenv.zsh link]: ../vsvenv/blob/master/vsvenv.zsh
+[vsvenv.zsh link]: ../master/vsvenv.zsh
 [freecodecamp link]: https://www.freecodecamp.org/news/how-to-configure-your-macos-terminal-with-zsh-like-a-pro-c0ab3f3c1156/
