@@ -18,8 +18,8 @@ Once at the home directory type in: ``nano ~/.zshrc`` and a text-editor should p
 
 #### Virtual Environment Setup
 To create a new venv, cd into your desired project directory and type in: ``vsvenv <python-version>``<br><br>
-If the directory ``~/env`` already exists, you will be prompted to replace it with the venv.<br>
-After the venv is created a ``settings.json`` file will be created under ``~/.vscode`` if it does not already exist. The entry: ``"python.pythonPath": "env/bin/python"`` will be added to the json to link your new venv to the python interpreter in VSCode.<br><br>
+If the directory ``./env`` already exists, you will be prompted to replace it with the venv.<br>
+After the venv is created a ``settings.json`` file will be created under ``./.vscode`` if it does not already exist. The entry: ``"python.pythonPath": "env/bin/python"`` will be added to the json to link your new venv to the python interpreter in VSCode.<br><br>
 You should now be ready to run your python project directly in VSCode using the venv.
 
 [vsvenv.zsh link]: ../vsvenv/blob/master/vsvenv.zsh
