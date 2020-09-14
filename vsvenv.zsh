@@ -5,6 +5,13 @@ vsvenv () {
         printf "${YEL}==>${NC} Existing directory $PWD/env will be replaced with new python$1 venv\n\n"
         if ! read -q "REPLY?Press Y/y to continue or any other key to abort"; then
             printf "\n${YEL}==>${NC} Aborted\n"
+    usage() { printf "${_YEL}==>${_NC} Usage: vsvenv <python-version> [-d \"<directory>\"]\n" 1>&2; return; }
+
+    if ! [[ $1 =~ ^3(.[3-9])?$ ]]; then
+        printf "${_YEL}==>${_NC} Invalid python version\n"
+        return $(usage)
+    fi
+    _python_version=$1
             return
         fi
     printf "\n"
