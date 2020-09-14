@@ -7,6 +7,7 @@ vsvenv is a zsh library that contains functions to easen virtual environment set
 ## Examples
 <img src=https://github.com/kozzza/vsvenv/blob/master/project-examples/vsvenv-example-1.png width="700">
 <img src=https://github.com/kozzza/vsvenv/blob/master/project-examples/vsvenv-example-2.png width="700">
+<img src=https://github.com/kozzza/vsvenv/blob/master/project-examples/vsvenv-example-3.png width="700">
 
 ## Installation
 
