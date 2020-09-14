@@ -1,10 +1,9 @@
 vsvenv () {
-    YEL='\033[0;33m'
-    NC='\033[0m'
-    if [ -d $PWD/env ]; then
-        printf "${YEL}==>${NC} Existing directory $PWD/env will be replaced with new python$1 venv\n\n"
-        if ! read -q "REPLY?Press Y/y to continue or any other key to abort"; then
-            printf "\n${YEL}==>${NC} Aborted\n"
+    _YEL='\033[0;33m'
+    _GRE='\033[0;32m'
+    _NC='\033[0m'
+    _venv_directory=env
+
     usage() { printf "${_YEL}==>${_NC} Usage: vsvenv <python-version> [-d \"<directory>\"]\n" 1>&2; return; }
 
     if ! [[ $1 =~ ^3(.[3-9])?$ ]]; then
@@ -12,33 +11,58 @@ vsvenv () {
         return $(usage)
     fi
     _python_version=$1
+
+    shift
+    while getopts ":d:" o; do
+        case "${o}" in
+            d)
+                _venv_directory=${OPTARG}
+                printf "${_YEL}==>${_NC} Selected directory for new python$_python_version venv: $PWD/${_GRE}$_venv_directory${_NC}\n\n"
+                if ! read -q "REPLY?Press Y/y to continue or any other key to abort: "; then
+                    printf "\n${_YEL}==>${_NC} Aborted\n"
+                    return
+                fi
+                printf "\n"
+                ;;
+            *)
+                usage
+                ;;
+        esac
+    done
+
+    if [ -d $PWD/$_venv_directory ]; then
+        printf "${_YEL}==>${_NC} Existing directory $PWD/${_GRE}$_venv_directory${_NC} will be replaced with new python$_python_version venv\n\n"
+        if ! read -q "REPLY?Press Y/y to continue or any other key to abort: "; then
+            printf "\n${_YEL}==>${_NC} Aborted\n"
             return
         fi
     printf "\n"
-    rm -rf $PWD/env
+    rm -rf $PWD/$_venv_directory
     fi
-    if python$1 -m venv env 1>/dev/null; then
-        printf "${YEL}==>${NC} Created python$1 venv in $PWD\n"
-        file=".vscode/settings.json"
-        if [ ! -f $file ]; then
+
+    if python$_python_version -m venv $_venv_directory 1>/dev/null; then
+        printf "${_YEL}==>${_NC} Created python$_python_version venv in $PWD/${_GRE}$_venv_directory${_NC}\n"
+        _vsc_settings_file=".vscode/settings.json"
+
+        if [ ! -f $_vsc_settings_file ]; then
             mkdir $PWD/.vscode
-            echo "{\n\t\"python.pythonPath\": \"env/bin/python\"\n}" > $PWD/$file
+            echo "{\n\t\"python.pythonPath\": \"$_venv_directory/bin/python\"\n}" > $PWD/$_vsc_settings_file
         else
             arr=()
             while IFS='' read -r line; do
                 arr+=("$line")
-            done < <(jq 'keys[]' $PWD/$file)
-            if [[ -z $(grep '[^[:space:]]' $PWD/$file) ]]; then
-                echo "{\n\t\"python.pythonPath\": \"env/bin/python\"\n}" > $PWD/$file
+            done < <(jq 'keys[]' $PWD/$_vsc_settings_file)
+            if [[ -z $(grep '[^[:space:]]' $PWD/$_vsc_settings_file) ]]; then
+                echo "{\n\t\"python.pythonPath\": \"$_venv_directory/bin/python\"\n}" > $PWD/$_vsc_settings_file
             elif [[ " ${arr[@]} " =~ "python.pythonPath" ]]; then
-                mv $PWD/$file temp.json
-                jq -r '."python.pythonPath" = "env/bin/python"' temp.json > $PWD/$file && rm temp.json;
+                mv $PWD/$_vsc_settings_file temp.json
+                jq -r ".\"python.pythonPath\" = \"$_venv_directory/bin/python\"" temp.json > $PWD/$_vsc_settings_file && rm temp.json;
             else
-                mv $PWD/$file temp.json
-                jq '. += {"python.pythonPath": "env/bin/python"}' temp.json > $PWD/$file  && rm temp.json;
+                mv $PWD/$_vsc_settings_file temp.json
+                jq ". += {\"python.pythonPath\": \"$_venv_directory/bin/python\"}" temp.json > $PWD/$_vsc_settings_file && rm temp.json;
             fi
         fi
     else
-        printf "${YEL}==>${NC} An error occurred\n"
+        printf "${_YEL}==>${_NC} An error occurred (check if your python$_python_version installation is correct)\n"
     fi
 }
