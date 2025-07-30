@@ -2,7 +2,7 @@ vsvenv () {
     _YEL='\033[0;33m'
     _GRE='\033[0;32m'
     _NC='\033[0m'
-    _venv_directory=env
+    _venv_directory=venv
 
     usage() { printf "${_YEL}==>${_NC} Usage: vsvenv <python-version> [-d \"<directory>\"]\n" 1>&2; return; }
 
