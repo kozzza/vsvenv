@@ -6,7 +6,7 @@ vsvenv () {
 
     usage() { printf "${_YEL}==>${_NC} Usage: vsvenv <python-version> [-d \"<directory>\"]\n" 1>&2; return; }
 
-    if ! [[ $1 =~ ^3(.[3-9])?$ ]]; then
+    if ! [[ $1 =~ ^3(.[0-9]{1,2})?$ ]]; then
         printf "${_YEL}==>${_NC} Invalid python version\n"
         return $(usage)
     fi
@@ -65,4 +65,13 @@ vsvenv () {
     else
         printf "${_YEL}==>${_NC} An error occurred (check if your python$_python_version installation is correct)\n"
     fi
+}
+
+actvenv () {
+    if [ $# -eq 0 ]; then
+        _venv_directory=venv
+    else
+        _venv_directory=$1
+    fi
+    source $_venv_directory/bin/activate
 }
